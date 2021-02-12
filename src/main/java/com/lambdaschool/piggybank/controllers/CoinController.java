@@ -8,29 +8,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class CoinController {
+
     @Autowired
     CoinRepository coinrepo;
 
-    @GetMapping(value = "money/total", produces = "application/json")
-    public ResponseEntity<?> getTotal(){
-        final double[] total = {0};
-        coinrepo.findAll().iterator().forEachRemaining((item) ->
-                {
-                    long quantity = item.getQuantity();
-                    total[0] +=item.getValue()*quantity;
-                    if (quantity > 1){
-                        System.out.println(item.getQuantity()+" "+item.getNameplural());
-                    }
-                    else {
-                        System.out.println(item.getQuantity()+" "+item.getName());
-                    }
-                }
-        );
-        System.out.println("The piggy bank holds "+total[0]);
-        return new ResponseEntity<>(total[0], HttpStatus.OK);
+    @GetMapping(value = "/total", produces = {"application/json"})
+    public ResponseEntity<?> ListAllMoney() {
+        List<Coin> myList = new ArrayList<>();
+        coinrepo.findAll().iterator().forEachRemaining(myList::add);
+
+        double total = 0.00;
+        for (Coin c : myList) {
+            total += (c.getValue() * c.getQuantity());
+            if (c.getQuantity() > 1) {
+                System.out.println(c.getQuantity() + " " + c.getNameplural());
+            } else {
+                System.out.println(c.getQuantity() + " " + c.getName());
+            }
+        }
+        System.out.println("The piggy bank holds " + total);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
