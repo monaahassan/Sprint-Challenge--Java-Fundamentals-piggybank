@@ -38,11 +38,22 @@ public class CoinController
         coinRepository.findAll().iterator().forEachRemaining(coinList::add);
 
         double total = 0;
-        for (Coin c : coinList){
-            total += (c.getValue() * c.getQuantity());
-            System.out.println(c.getQuantity() + " " + (c.getQuantity() > 1 ? c.getNamePlural() : c.getName()));
+        for (Coin c: coinList)
+        {
+            total = total + c.getQuantity() * c.getValue();
+        }
+        if (total == 1)
+        {
+            coinList.sort((c1, c2) -> c1.getName()
+                    .compareToIgnoreCase(c2.getName()));
+        } else
+        {
+            coinList.sort((c1, c2) -> c1.getNamePlural()
+                    .compareToIgnoreCase(c2.getNamePlural()));
         }
         System.out.println("The piggybank is holding " + total);
-        return new ResponseEntity<>(coinList, HttpStatus.OK);
+
+        return new ResponseEntity<>(coinList,
+                HttpStatus.OK);
     }
 }
