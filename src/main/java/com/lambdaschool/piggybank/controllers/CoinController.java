@@ -12,25 +12,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class CoinController {
-    @Autowired
-    CoinRepository coinRepository;
-    @GetMapping(value = "/total", produces = {"application/json"})
-    public ResponseEntity<?> ListAllMoney() {
-        List<Coin> myList = new ArrayList<>();
-        coinRepository.findAll().iterator().forEachRemaining(myList::add);
+public class CoinController
+{
+    private List<Coin> findCoins(List<Coin> myList, CheckCoin tester)
+    {
+        List<Coin> tempList = new ArrayList<>();
 
-        double total = 0.00;
-        for (Coin c : myList) {
-            total += (c.getValue() * c.getQuantity());
-            if (c.getQuantity() > 1) {
-                System.out.println(c.getQuantity() + " " + c.getNameplural());
-            } else {
-                System.out.println(c.getQuantity() + " " + c.getName());
+        for (Coin c : myList)
+        {
+            if (tester.test(c))
+            {
+                tempList.add(c);
             }
         }
-        System.out.println("The piggy bank holds " + total);
+        return tempList;
+    }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+    @Autowired
+    CoinRepository coinRepository;
+
+    // http://localhost:2019/total
+    @GetMapping(value = "/total", produces = {"application/json"})
+    public ResponseEntity<?> totalAmount(){
+        List<Coin> coinList = new ArrayList<>();
+        coinRepository.findAll().iterator().forEachRemaining(coinList::add);
+
+        double total = 0;
+        for (Coin c : coinList){
+            total += (c.getValue() * c.getQuantity());
+            System.out.println(c.getQuantity() + " " + (c.getQuantity() > 1 ? c.getNameplural() : c.getName()));
+        }
+        System.out.println("The piggybank is holding " + total);
+        return new ResponseEntity<>(coinList, HttpStatus.OK);
     }
 }

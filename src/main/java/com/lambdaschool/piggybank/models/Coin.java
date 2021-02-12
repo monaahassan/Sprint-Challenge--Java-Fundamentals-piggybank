@@ -14,7 +14,7 @@ public class Coin {
     private int quantity;
 
     public Coin() {
-        //default constructor
+        //required JPA/Constructor
     }
     public Coin(String name, String nameplural, double value, int quantity) {
         this.name = name;
@@ -23,11 +23,11 @@ public class Coin {
         this.quantity = quantity;
     }
     //getters and setters
-    public long getCoinid() {
+    public long getCoinId() {
         return coinid;
     }
 
-    public void setCoinid(int coinid) {
+    public void setCoinId(long coinid) {
         this.coinid = coinid;
     }
 
