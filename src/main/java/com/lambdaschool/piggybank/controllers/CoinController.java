@@ -13,14 +13,12 @@ import java.util.List;
 
 @RestController
 public class CoinController {
-
     @Autowired
-    CoinRepository coinrepo;
-
+    CoinRepository coinRepository;
     @GetMapping(value = "/total", produces = {"application/json"})
     public ResponseEntity<?> ListAllMoney() {
         List<Coin> myList = new ArrayList<>();
-        coinrepo.findAll().iterator().forEachRemaining(myList::add);
+        coinRepository.findAll().iterator().forEachRemaining(myList::add);
 
         double total = 0.00;
         for (Coin c : myList) {
