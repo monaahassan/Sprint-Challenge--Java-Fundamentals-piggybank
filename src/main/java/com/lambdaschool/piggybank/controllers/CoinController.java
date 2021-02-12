@@ -40,7 +40,7 @@ public class CoinController
         double total = 0;
         for (Coin c : coinList){
             total += (c.getValue() * c.getQuantity());
-            System.out.println(c.getQuantity() + " " + (c.getQuantity() > 1 ? c.getNameplural() : c.getName()));
+            System.out.println(c.getQuantity() + " " + (c.getQuantity() > 1 ? c.getNamePlural() : c.getName()));
         }
         System.out.println("The piggybank is holding " + total);
         return new ResponseEntity<>(coinList, HttpStatus.OK);
