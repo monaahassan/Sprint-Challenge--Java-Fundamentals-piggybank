@@ -53,7 +53,7 @@ public class CoinController
         }
         System.out.println("The piggybank is holding " + total);
 
-        return new ResponseEntity<>(coinList,
+        return new ResponseEntity<>(total,
                 HttpStatus.OK);
     }
 }

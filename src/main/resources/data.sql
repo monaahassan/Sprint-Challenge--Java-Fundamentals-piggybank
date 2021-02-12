@@ -1,5 +1,3 @@
- This is the actual seed data
- */
 DELETE
 FROM coins;
 
